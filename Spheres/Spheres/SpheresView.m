@@ -91,7 +91,7 @@ NSColor *clearCol;
     [path fill]; // clear the screen
     
     moveFact += moveFactDelta;
-    if(moveFact < 0.001 || moveFact > 1) // if the circles stopped moving / started slowing down
+    if(moveFact < 0.0001 || moveFact > 1) // if the circles stopped moving / started slowing down
     {
         if (moveFactDelta < 0)
             moveFactDelta = SSRandomFloatBetween(0.001,0.005);
