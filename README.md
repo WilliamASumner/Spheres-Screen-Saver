@@ -13,4 +13,4 @@
 each other
 
 ## Demo!
-<center> ![Uh oh, the demo didn't load](https://raw.githubusercontent.com/WilliamASumner/Spheres-Screen-Saver/master/demo-gif.gif) </center>
+![Uh oh, the demo didn't load](https://raw.githubusercontent.com/WilliamASumner/Spheres-Screen-Saver/master/demo-gif.gif)
