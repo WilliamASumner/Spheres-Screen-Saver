@@ -12,7 +12,7 @@
 
 double radius;
 const int numSpheres = 75;
-float radFact = 1.0;
+float previewFactor = 1.0;
 float moveFact = 1.0;
 float moveFactDelta = 0.001;
 float changeInCol = 0.0;
@@ -46,23 +46,23 @@ NSColor *clearCol;
     clearCol = [NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     if (!([super isPreview]))
     {
-        radFact = 5;
+        previewFactor = 5;
     }
     else
     {
-        radFact = 1.0;
+        previewFactor = 1.0;
     }
     for (int i = 0; i < numSpheres; i++)
     {
         radii[i] = 0.0; // set everything to zero at first
         radius = SSRandomFloatBetween(5.0, 20.0);
-        radii[i] = radius*radFact;
+        radii[i] = radius*previewFactor;
         rect = NSMakeRect(0.0,0.0,0.0,0.0); // make a new object
         rect.origin = SSRandomPointForSizeWithinRect(rect.size, [self bounds]);
         spheres[i] = rect;
-        vx[i] = SSRandomFloatBetween(-0.5, 0.5)*radFact/3;
-        vy[i] = SSRandomFloatBetween(-0.5,0.5)*radFact/3;
-        factors[i] = SSRandomFloatBetween(0.05, .2)*radFact;
+        vx[i] = SSRandomFloatBetween(-0.5, 0.5)*previewFactor/3;
+        vy[i] = SSRandomFloatBetween(-0.5,0.5)*previewFactor/3;
+        factors[i] = SSRandomFloatBetween(0.05, .2)*previewFactor;
     }
     hue = SSRandomFloatBetween( 0.0, 25 ) / 25; // random hue
     
@@ -122,9 +122,9 @@ NSColor *clearCol;
         {
             currentRect.origin = SSRandomPointForSizeWithinRect(currentRect.size,self.bounds);
             currentRect.size = NSMakeSize(0.0, 0.0); // shrink it to zero
-            factors[i] = SSRandomFloatBetween(0.05, 0.2)*radFact; // new factor
-            vx[i] = SSRandomFloatBetween(-0.5, 0.5)*radFact/3; // new velocity
-            vy[i] = SSRandomFloatBetween(-0.5, 0.5)*radFact/3;
+            factors[i] = SSRandomFloatBetween(0.05, 0.2)*previewFactor; // new factor
+            vx[i] = SSRandomFloatBetween(-0.5, 0.5)*previewFactor/3; // new velocity
+            vy[i] = SSRandomFloatBetween(-0.5, 0.5)*previewFactor/3;
         }
         NSSize oldsize = currentRect.size;
         currentRect.size = NSMakeSize(oldsize.width+factors[i]*(1.1-fact),oldsize.height+factors[i]*(1.1-fact));
@@ -140,8 +140,15 @@ NSColor *clearCol;
         hue = fmodf(hue+changeInCol,1.0); // new hue value
         color = [NSColor colorWithCalibratedHue:fmodf(hue+grad,1.0) saturation: 0.9 brightness:fact alpha:1.0 ];
         [color set];
+        [NSGraphicsContext saveGraphicsState];
+        NSShadow* theShadow = [[NSShadow alloc] init];
+        [theShadow setShadowOffset:NSMakeSize(10.0, -10.0)];
+        [theShadow setShadowBlurRadius:3.0];
+        [theShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.3]];
+        [theShadow set];
         path = [NSBezierPath bezierPathWithOvalInRect:(currentRect)];
         [path fill];
+        [NSGraphicsContext restoreGraphicsState];
     }
     [super animateOneFrame];
     return;
