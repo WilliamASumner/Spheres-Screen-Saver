@@ -11,3 +11,6 @@
 ## Known Issue(s)
 - There's a weird flickering when the colors transitions at point, I think it may be the result of multiple animations conflicting with
 each other
+
+## Demo!
+![Uh oh, the demo didn't load](https://raw.githubusercontent.com/WilliamASumner/Spheres-Screen-Saver/master/demo-gif.gif)
