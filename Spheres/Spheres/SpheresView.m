@@ -11,7 +11,7 @@
 
 
 double radius;
-const int numSpheres = 75;
+const int numSpheres = 100;
 float previewFactor = 1.0;
 float moveFact = 1.0;
 float moveFactDelta = 0.001;
@@ -91,25 +91,29 @@ NSColor *clearCol;
     [path fill]; // clear the screen
     
     moveFact += moveFactDelta;
-    if(moveFact < 0.0001 || moveFact > 1) // if the circles stopped moving / started slowing down
+    if(moveFact < 0.0000001 || moveFact > 1) // if the circles stopped moving / started slowing down
     {
         if (moveFactDelta < 0)
             moveFactDelta = SSRandomFloatBetween(0.001,0.005);
         else
             moveFactDelta = SSRandomFloatBetween(.001, .005)*-1;
-        changeInCol = SSRandomFloatBetween(0.000001, 0.00001); // new changing color
-        gradTemp = SSRandomIntBetween(0, 1000)/1000.0;
-        direcX = SSRandomFloatBetween(-0.167, .167);
-        direcY = SSRandomFloatBetween(-0.167, .167);
+        if (fabs(gradFact-gradTemp) < 0.01)
+            changeInCol = SSRandomFloatBetween(0.000001, 0.00001); // new changing color
+        if (moveFact < 0.0001)
+        {
+            gradTemp = SSRandomIntBetween(0, 1000)/1000.0;
+            direcX = SSRandomFloatBetween(-0.167, .167);
+            direcY = SSRandomFloatBetween(-0.167, .167);
+        }
         
     }
     //gradFactAnim = (gradTemp-gradFact); // animate to new value
-    if (fabsf(gradFact-gradTemp) > 0.01 && changeInCol < 0.000005 )
+    if (fabsf(gradFact-gradTemp) > 0.01 && changeInCol < 0.0005 )
     {
         if (gradFact < gradTemp)
-            gradFact += 0.005;
+            gradFact += 0.0005;
         else
-            gradFact -= 0.005;
+            gradFact -= 0.0005;
     }
     
     for (int i = 0; i < numSpheres; i++)
@@ -141,7 +145,8 @@ NSColor *clearCol;
         color = [NSColor colorWithCalibratedHue:fmodf(hue+grad,1.0) saturation: 0.9 brightness:fact alpha:1.0 ];
         [color set];
         [NSGraphicsContext saveGraphicsState];
-        NSShadow* theShadow = [[NSShadow alloc] init];
+        
+        NSShadow* theShadow = [[NSShadow alloc] init]; // a shadow
         [theShadow setShadowOffset:NSMakeSize(10.0, -10.0)];
         [theShadow setShadowBlurRadius:3.0];
         [theShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.3]];
